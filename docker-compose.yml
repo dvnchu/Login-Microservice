@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD : ${DB_PASSWORD}
+      POSTGRES_DB: login_db
+    ports:
+      - ${DB_PORT}
+
