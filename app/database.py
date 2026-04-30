@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 
 # Carga archivo .env
 load_dotenv()
@@ -18,4 +19,19 @@ SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+def SessionLocal():
+    return Session(engine)
+    
+
+#Funcion para que cada peticion tenga su propio tunel a la db para evitar bottleneck
+def get_db():
+    db = SessionLocal()
+    try: 
+        yield db
+    finally:
+        db.close()
+    
+    
